@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block head %}
+<script type="text/javascript">
+    var cantidadActualFormularios = 1;
+  function agregarFila() {
+    
+    
+    
+    cantidadActualFormularios += 1;
+    document.getElementById("id_form-TOTAL_FORMS").value = cantidadActualFormularios;
+    console.log(document.getElementById("id_form-TOTAL_FORMS").value)
+    var tabla = document.getElementById("lineas");
+    var numFilas = tabla.rows.length - 1;
+    var fila = tabla.insertRow(numFilas);
+
+    var columna1 = fila.insertCell(0);
+    var columna2 = fila.insertCell(1);
+    var columna3 = fila.insertCell(2);
+    var columna4 = fila.insertCell(3);
+    var columna5 = fila.insertCell(4);
+
+    columna1.innerHTML = '<input type="text" name="form-' + numFilas + '-numero_de_telefono">';
+    
+    columna2.innerHTML = '<input type="text" name="form-' + numFilas + '-serie">';
+    
+    columna3.innerHTML = '<select name="form-' + numFilas + '-estado" id="id_form-' + numFilas + '-estado">' + 
+                        '<option value="">--------</option>' +
+                        '{% for est in estado %}' + '<option value="{{ est.id }}">{{ est.nombre }}</option>' + '{% endfor %}' + '</select>';
+
+    columna4.innerHTML = '<select name="form-' + numFilas + '-empresa" id="id_form-' + numFilas + '-empresa">' + 
+                        '<option value="">--------</option>' +
+                        '{% for emp in empresa %}' + '<option value="{{ emp.id }}">{{ emp.nombre }}</option>' + '{% endfor %}' + '</select>';
+    columna5.innerHTML = '<select name="form-' + numFilas + '-plan" id="id_form-' + numFilas + '-plan">' + 
+                        '<option value="">--------</option>' +
+                        '{% for pl in plan %}' + '<option value="{{ pl.id }}">{{ pl.nombre }}</option>' + '{% endfor %}' + '</select>';
+
+    var oldComboBoxEstado = document.getElementById("id_form-0-estado");
+    var newComboBoxEstado = columna3.getElementsByTagName("select")[0];
+    newComboBoxEstado.innerHTML = oldComboBoxEstado.innerHTML;
+    var oldComboBoxEmpresa = document.getElementById("id_form-0-empresa");
+    var newComboBoxEmpresa = columna4.getElementsByTagName("select")[0];
+    newComboBoxEmpresa.innerHTML = oldComboBoxEmpresa.innerHTML;
+    var oldComboBoxPlan = document.getElementById("id_form-0-plan");
+    var newComboBoxPlan = columna5.getElementsByTagName("select")[0];
+    newComboBoxPlan.innerHTML = oldComboBoxPlan.innerHTML;
+    
+}
+
+</script>
+{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <table class="posts-table" id="lineas">
+      <thead>
+        <tr class="users-table-info">
+          <th>Telefono</th>
+          <th>Serie</th>
+          <th>Estado</th>
+          <th>Empresa</th>
+          <th>Plan</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset.forms %}
+        <tr class="users-table-info">
+          <td class="users-table td">{{ form.numero_de_telefono }}</td>
+          <td>{{ form.numero_de_serie }}</td>
+          <td>{{ form.estado }}</td>
+          <td>{{ form.empresa }}</td>
+          <td>{{ form.plan }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit" value="Guardar">
+    <!-- Incluya estos campos ocultos en su formulario -->
+
+<input type="hidden" name="form-TOTAL_FORMS" id="id_form-TOTAL_FORMS" value = "">
+
+<input type="hidden" name="form-INITIAL_FORMS" value="{{ formset.initial_form_count }}">
+<input type="hidden" name="form-MIN_NUM_FORMS" value="{{ formset.min_num_forms }}">
+<input type="hidden" name="form-MAX_NUM_FORMS" value="{{ formset.max_num_forms }}">
+
+
+  </form>
+  <button type="button" onclick="agregarFila()">Agregar equipo</button>
+
+{% endblock %}

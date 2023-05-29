@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}LINEAS{% endblock %}
+{% block content %}
+
+<div class="users-table table-wrapper">
+    <table class="posts-table">
+      <thead>
+        <tr class="users-table-info">
+          <th>
+              <label class="users-table__checkbox ms-20">
+                  #
+              </label>
+          </th>
+          <th>TELEFONO</th>
+          <th>SIM</th>
+          <th>ESTADO</th>
+          <th>EMPRESA</th>
+          <th>PLAN</th>
+          <th>EDITAR</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for linea in lineas %}
+          <tr>
+              <td>
+                  <label class="users-table__checkbox">
+                    <input type="checkbox" class="check">
+                    
+                  </label>
+              </td>
+              <td>{{ linea.numero_de_telefono }}</td>
+              <td>{{ linea.numero_de_serie }}</td>
+              <td>{{ linea.get_estado_display }}</td>
+              <td>{{ linea.empresa }}</td>
+              <td>{{ linea.plan }}</td>
+              <td><a href="{% url 'linea_edit' linea.id %}">Editar</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% endblock %}

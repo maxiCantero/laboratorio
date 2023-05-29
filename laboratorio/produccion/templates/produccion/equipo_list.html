@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} TABLAS {% endblock %}
+{% block content %}
+
+<div class="users-table table-wrapper">
+  <table class="posts-table">
+    <thead>
+      <tr class="users-table-info">
+        <th>
+            <label class="users-table__checkbox ms-20">
+                #
+            </label>
+        </th>
+        <th>SERIE</th>
+        <th>IMEI</th>
+        <th>ESTADO</th>
+        <th>TIPO</th>
+        <th>LINEA</th>
+        <th>TELEFONO</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for equipo in equipos %}
+        <tr>
+            <td>
+                <label class="users-table__checkbox">
+                  <input type="checkbox" class="check">
+                  
+                </label>
+            </td>
+            <td>{{ equipo.numero_de_serie }}</td>
+            <td>{{ equipo.imei }}</td>
+            <td>{{ equipo.get_estado_display }}</td>
+            <td>{{ equipo.tipodeEquipo }}</td>
+            <td>{{ equipo.linea }}</td>
+            <td>{{ equipo.linea.numero_de_telefono }}</td>
+            <td><a href="{% url 'equipo_edit' equipo.id %}">Editar</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}
